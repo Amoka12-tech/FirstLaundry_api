@@ -56,4 +56,6 @@
             $returnData = messg(0, 400, $e->getMessage());
         }
     }
+
+    echo json_encode($returnData);
 ?>

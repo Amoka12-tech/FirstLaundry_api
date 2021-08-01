@@ -59,10 +59,10 @@
                         if($otpResult){
                             $returnData = messg(1, 200, $userData); //Return user Data on successful
                         }else{
-                            throw new Exception('Failed to reach your phone contact admin 08034329120');
+                            throw new Exception('Failed to reach your phone contact admin');
                         }
                     }else{
-                        throw new Exception('Otp can\'t reach your phone try again');
+                        throw new Exception('Otp can not reach your phone try again');
                     }
                 }else{
                     throw new Exception('User with this phone number not found');
