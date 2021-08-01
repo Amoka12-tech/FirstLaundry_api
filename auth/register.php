@@ -30,28 +30,23 @@
     if($_SERVER["REQUEST_METHOD"] != "POST"){
         $returnData = messg(0, 404, "Page Not Found");
     }elseif(
-        !isset($data->name) 
-    || !isset($data->phone) 
+        !isset($data->phone) 
     || !isset($data->passWord)
-    || empty(trim($data->name))
     || empty(trim($data->phone))
     || empty(trim($data->passWord))
     ){
-        $fields = ['fields' => ['name','phone','password']];
+        $fields = ['fields' => ['phone','password']];
         $returnData = messg(0,422,'Please Fill in all Required Fields!',$fields);
     }else{
-        $name = mysqli_real_escape_string($dbConnect, trim($data->name));
         $phone = mysqli_real_escape_string($dbConnect, trim($data->phone));
         $passWord = mysqli_real_escape_string($dbConnect, trim($data->passWord));
         $uuid = new UUID_V4();
         $newUuidv4 = $uuid->guidv4();
 
         if(strlen($phone) !== 11 ){
-            $returnData = messg(0, 422, "Invalid phone number");
+            $returnData = messg(0, 422, "Invalid phone number expected eleven(11) digit");
         }elseif(strlen($passWord) < 8){
             $returnData = messg(0, 422, "Password length must not be less than eight(8) characters");
-        }elseif(strlen($name) < 3){
-            $returnData = messg(0, 422, "Your name can not be less than three(3) characters");
         }else{
             try {
                 //code...
@@ -61,7 +56,7 @@
                     $returnData = messg(0, 422, "User Already Exist Please click the signIn");
                 }else{
                     $hashPassWord = password_hash($passWord, PASSWORD_DEFAULT);
-                    $insertIntoUsers = "INSERT INTO `users`(`id`, `name`, `phone`, `password`) VALUES('$newUuidv4', '$name','$phone','$hashPassWord')";
+                    $insertIntoUsers = "INSERT INTO `users`(`id`, `phone`, `password`) VALUES('$newUuidv4','$phone','$hashPassWord')";
                     $insertQuery = $dbConnect->query($insertIntoUsers);
                     if($insertQuery === TRUE){
                         //Here user detail inserted succesfully now send generate otp

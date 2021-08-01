@@ -72,7 +72,7 @@
                             throw new Exception('Old OTP not removed contact admin +2348034329120');
                         }
                     }else{
-                        throw new Exception('Can\'t reach your phone, contact admin +2348034329120 to activate your account');
+                        throw new Exception('Can not reach your phone, contact admin +2348034329120 to activate your account');
                     }
                 }else{
                     throw new Exception('Please wait for the next '.$secDate.' seconds and try again');

@@ -63,7 +63,9 @@
                         }else{
                             throw new Exception("Database error! ");
                         }
-                    }else{}
+                    }else{
+                        throw new Exception('Wrong password! please check and try again.');
+                    }
                 }else{
                     throw new Exception('User with this phone not found in our database');
                 }
