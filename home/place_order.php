@@ -66,9 +66,11 @@
         $selectedItems = $data->selectedItems;
         $orderCount = count($selectedItems);
 
+        $itemAddCount = 0;
+
         //Now insert data of line
         $insertOrder = "INSERT INTO 
-        `order`(`id`, `orderId`, `userId`, `amount`, `totalCount`, `paymentRef`, `paymentStatus`, `deliveryDateTime`, `pickupDateTime`, `deliveryAddress`, `pickupAddress`, `deliveryLatLng`, `pickupLatLng`, `orderDate`) 
+        `orderdb`(`id`, `orderId`, `userId`, `amount`, `totalCount`, `paymentRef`, `paymentStatus`, `deliveryDateTime`, `pickupDateTime`, `deliveryAddress`, `pickupAddress`, `deliveryLatLng`, `pickupLatLng`, `orderDate`) 
         VALUES('$id','$orderId','$userId','$amount','$totalCount','$paymentRef','$paymentStatus','$deliveryDateTime','$pickupDateTime','$deliveryAddress','$pickupAddress','$deliveryLatLng','$pickupLatLng','$orderDate')";
         $orderResult = $dbConnect->query($insertOrder);
         if($orderResult === TRUE){
@@ -83,19 +85,42 @@
                 for ($order=0; $order < $itemOrderCount; $order++) { 
                     # code...
                     $orderData = $itemOrder[$order];
-                    $orderService = $itemOrder[$order]->type;
-                    $orderPrice = $itemOrder[$order]->price;
-                    echo $itemName." ".$orderService." ".$orderPrice." ";
+                    $itemId = $thisItem->id;
+                    $orderService = $orderData->type;
+                    $orderPrice = $orderData->price;
+
+                    $insertItem = "INSERT INTO 
+                    `items`(`orderId`,`itemId`,`itemName`,`itemService`,`itemPrice`)
+                    VALUES('$orderId','$itemId','$itemName','$orderService','$orderPrice')";
+
+                    $insertResult = $dbConnect->query($insertItem);
+                    if($insertResult === TRUE){
+                        $itemAddCount++;
+                    }else{
+                        $returnData = messg(0, 400, 'Critical Error on adding items contact');
+                    }
 
                     //Insert each into database
                 }
             }
+
+            $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId' AND `orderId`='$orderId'";
+            $retriveItems = "SELECT * FROM `items` WHERE `orderId`='$orderId'";
+
+            $retriveOrderData = $dbConnect->query($retriveOrder);
+            $retriveItemsData = $dbConnect->query($retriveItems);
+
+            $orderFetch = $retriveOrderData->fetch_assoc();
+            $itemFetch = $retriveItemsData->fetch_all(MYSQLI_ASSOC);
+            $orderFetch['items'] = $itemFetch;
+            
+
+            $returnData = messg(0, 200, $orderFetch); //Return order data
 
         }else{
             $returnData = messg(0, 400, 'Oops! Failed to update order, contact admin or try again');
         }
 
     }
-
     echo json_encode($returnData);
 ?>
