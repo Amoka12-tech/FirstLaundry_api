@@ -32,29 +32,31 @@
         $returnData = messg(0, 404, "Page Not Found");
     }elseif(
         !isset($data->userId)
+    || !isset($data->orderId)
+    || empty($data->orderId)
     || empty($data->userId)
     ){
         $returnData = messg(0, 422, 'Invalid Order Request');
     }else{
-        $orderArray = [];
         $userId = mysqli_real_escape_string($dbConnect, trim($data->userId));
+        $orderId = mysqli_real_escape_string($dbConnect, trim($data->orderId));
 
-        $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId'";
+        $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId' AND `orderId`='$orderId'";
+        $retriveItems = "SELECT * FROM `items` WHERE `orderId`='$orderId'";
 
-        $retriveOrderData = $dbConnect->query($retriveOrder); 
+            $retriveOrderData = $dbConnect->query($retriveOrder);
+            $retriveItemsData = $dbConnect->query($retriveItems);
 
-        while($orderFetch = $retriveOrderData->fetch_assoc()){
-            $orderId = $orderFetch['orderId'];
-            $retriveItems = "SELECT * FROM `items` WHERE `orderId`='$orderId'";
+            if($retriveOrderData->num_rows > 0){
+                $orderFetch = $retriveOrderData->fetch_assoc();
+                $itemFetch = $retriveItemsData->fetch_all(MYSQLI_ASSOC);
+                $orderFetch['items'] = $itemFetch;
+                
 
-            $itemData = $dbConnect->query($retriveItems);
-            $itemFetch = $itemData->fetch_all(MYSQLI_ASSOC);
-
-            $orderFetch['items'] = $itemFetch;
-            array_push($orderArray, $orderFetch);
-        };
-
-        $returnData = messg(1, 200, $orderArray);
+                $returnData = messg(1, 200, $orderFetch); //Return order data
+            }else{
+                $returnData = messg(0, 400, 'Order Details not found try again');
+            }
     };
 
     echo json_encode($returnData);

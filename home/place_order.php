@@ -115,7 +115,7 @@
             $orderFetch['items'] = $itemFetch;
             
 
-            $returnData = messg(0, 200, $orderFetch); //Return order data
+            $returnData = messg(1, 200, $orderFetch); //Return order data
 
         }else{
             $returnData = messg(0, 400, 'Oops! Failed to update order, contact admin or try again');
