@@ -1,4 +1,3 @@
-<!-- This class is expected to return all order histor -->
 <?php 
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: access");

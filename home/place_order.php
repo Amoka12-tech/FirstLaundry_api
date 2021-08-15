@@ -70,8 +70,8 @@
 
         //Now insert data of line
         $insertOrder = "INSERT INTO 
-        `orderdb`(`id`, `orderId`, `userId`, `amount`, `totalCount`, `paymentRef`, `paymentStatus`, `deliveryDateTime`, `pickupDateTime`, `deliveryAddress`, `pickupAddress`, `deliveryLatLng`, `pickupLatLng`, `orderDate`) 
-        VALUES('$id','$orderId','$userId','$amount','$totalCount','$paymentRef','$paymentStatus','$deliveryDateTime','$pickupDateTime','$deliveryAddress','$pickupAddress','$deliveryLatLng','$pickupLatLng','$orderDate')";
+        `orderdb`(`id`, `orderId`, `userId`, `amount`, `totalCount`, `paymentRef`, `paymentStatus`, `deliveryDateTime`, `pickupDateTime`, `deliveryAddress`, `pickupAddress`, `deliveryLatLng`, `pickupLatLng`) 
+        VALUES('$id','$orderId','$userId','$amount','$totalCount','$paymentRef','$paymentStatus','$deliveryDateTime','$pickupDateTime','$deliveryAddress','$pickupAddress','$deliveryLatLng','$pickupLatLng')";
         $orderResult = $dbConnect->query($insertOrder);
         if($orderResult === TRUE){
             

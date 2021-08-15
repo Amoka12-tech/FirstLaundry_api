@@ -1,4 +1,3 @@
-<!-- This class is expected to return all order histor -->
 <?php 
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: access");
@@ -39,7 +38,7 @@
         $orderArray = [];
         $userId = mysqli_real_escape_string($dbConnect, trim($data->userId));
 
-        $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId'";
+        $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId' ORDER BY `orderDate` DESC";
 
         $retriveOrderData = $dbConnect->query($retriveOrder); 
 

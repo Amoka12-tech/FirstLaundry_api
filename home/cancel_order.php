@@ -1,4 +1,3 @@
-<!-- This class is expected to return all order histor -->
 <?php 
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Headers: access");
@@ -46,7 +45,7 @@
 
             $retriveOrderData = $dbConnect->query($retriveOrder);
             if($retriveOrderData->num_rows > 0){
-                $updateOrder = "UPDATE `orderdb` SET `status`='cancel' WHERE `userId`='$userId' AND `orderId`='$orderId'";
+                $updateOrder = "UPDATE `orderdb` SET `status`='canceled' WHERE `userId`='$userId' AND `orderId`='$orderId'";
                 $updateQry = $dbConnect->query($updateOrder);
                 if($updateQry){
                     $newOrderData = $dbConnect->query($retriveOrder);
