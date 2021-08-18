@@ -39,13 +39,15 @@
     }else{
         $userId = mysqli_real_escape_string($dbConnect, trim($data->userId));
         $orderId = mysqli_real_escape_string($dbConnect, trim($data->orderId));
+        date_default_timezone_set("Africa/Lagos");
+        $cancelDate = date(DATE_ATOM);
 
         $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId' AND `orderId`='$orderId'";
         $retriveItems = "SELECT * FROM `items` WHERE `orderId`='$orderId'";
 
             $retriveOrderData = $dbConnect->query($retriveOrder);
             if($retriveOrderData->num_rows > 0){
-                $updateOrder = "UPDATE `orderdb` SET `status`='canceled' WHERE `userId`='$userId' AND `orderId`='$orderId'";
+                $updateOrder = "UPDATE `orderdb` SET `status`='canceled', `completedDate`='$cancelDate' WHERE `userId`='$userId' AND `orderId`='$orderId'";
                 $updateQry = $dbConnect->query($updateOrder);
                 if($updateQry){
                     $newOrderData = $dbConnect->query($retriveOrder);

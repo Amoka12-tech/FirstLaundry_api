@@ -51,8 +51,8 @@
         $totalCount = $data->totalCount;
         $paymentRef = mysqli_real_escape_string($dbConnect, trim($data->payment->paymentData->reference));
         $paymentStatus = mysqli_real_escape_string($dbConnect, trim($data->payment->paymentStatus));
-        $deliveryDateTime = mysqli_real_escape_string($dbConnect, trim($data->deliveryDateTime->Date))." ".mysqli_real_escape_string($dbConnect, trim($data->deliveryDateTime->Time));
-        $pickupDateTime = mysqli_real_escape_string($dbConnect, trim($data->pickupDateTime->Date))." ".mysqli_real_escape_string($dbConnect, trim($data->pickupDateTime->Time));
+        $deliveryDateTime = mysqli_real_escape_string($dbConnect, trim($data->deliveryDateTime));
+        $pickupDateTime = mysqli_real_escape_string($dbConnect, trim($data->pickupDateTime));
 
         $deliveryAddress = mysqli_real_escape_string($dbConnect, trim($data->locationData->deliveryAddressName));
         $pickupAddress = mysqli_real_escape_string($dbConnect, trim($data->locationData->pickupAddressName));
