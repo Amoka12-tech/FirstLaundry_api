@@ -61,19 +61,28 @@
 
         // Return date/time info of a timestamp; then format the output
         $mydate=getdate(date("U"));
-        $orderDate = $mydate['weekday'].", ".$mydate['month']." ".$mydate['mday'].", ".$mydate['year']." ".$mydate['hours'].":".$mydate['minutes'];
+        // $orderDate = $mydate['weekday'].", ".$mydate['month']." ".$mydate['mday'].", ".$mydate['year']." ".$mydate['hours'].":".$mydate['minutes'];
+
+        date_default_timezone_set("Africa/Lagos");
+        $orderDate = date(DATE_ATOM);
 
         $selectedItems = $data->selectedItems;
         $orderCount = count($selectedItems);
 
         $itemAddCount = 0;
 
+        $discount = $data->discount;
+
         //Now insert data of line
         $insertOrder = "INSERT INTO 
-        `orderdb`(`id`, `orderId`, `userId`, `amount`, `totalCount`, `paymentRef`, `paymentStatus`, `deliveryDateTime`, `pickupDateTime`, `deliveryAddress`, `pickupAddress`, `deliveryLatLng`, `pickupLatLng`) 
-        VALUES('$id','$orderId','$userId','$amount','$totalCount','$paymentRef','$paymentStatus','$deliveryDateTime','$pickupDateTime','$deliveryAddress','$pickupAddress','$deliveryLatLng','$pickupLatLng')";
+        `orderdb`(`id`, `orderId`, `userId`, `amount`, `totalCount`, `paymentRef`, `paymentStatus`, `deliveryDateTime`, `pickupDateTime`, `deliveryAddress`, `pickupAddress`, `deliveryLatLng`, `pickupLatLng`, `orderDate`, `discount`) 
+        VALUES('$id','$orderId','$userId','$amount','$totalCount','$paymentRef','$paymentStatus','$deliveryDateTime','$pickupDateTime','$deliveryAddress','$pickupAddress','$deliveryLatLng','$pickupLatLng', '$orderDate', '$discount')";
         $orderResult = $dbConnect->query($insertOrder);
         if($orderResult === TRUE){
+            if($discount > 0){
+                $updateDiscountQry = "UPDATE `discountdb` SET `status`='expired' WHERE `userId`='$userId'";
+                $dbConnect->query($updateDiscountQry);
+            };
             
             //Start looping insert for every item
             for ($item=0; $item < $orderCount; $item++) { 

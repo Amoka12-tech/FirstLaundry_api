@@ -27,6 +27,9 @@
     $data = json_decode(file_get_contents("php://input"));
     $returnData = [];
 
+    date_default_timezone_set("Africa/Lagos");
+    $registerDate = date(DATE_ATOM);
+
     if($_SERVER["REQUEST_METHOD"] != "POST"){
         $returnData = messg(0, 404, "Page Not Found");
     }elseif(
@@ -56,7 +59,7 @@
                     $returnData = messg(0, 422, "User Already Exist Please click the signIn");
                 }else{
                     $hashPassWord = password_hash($passWord, PASSWORD_DEFAULT);
-                    $insertIntoUsers = "INSERT INTO `users`(`id`, `phone`, `password`) VALUES('$newUuidv4','$phone','$hashPassWord')";
+                    $insertIntoUsers = "INSERT INTO `users`(`id`, `phone`, `password`, `date`) VALUES('$newUuidv4','$phone','$hashPassWord','$registerDate')";
                     $insertQuery = $dbConnect->query($insertIntoUsers);
                     if($insertQuery === TRUE){
                         //Here user detail inserted succesfully now send generate otp
@@ -70,6 +73,8 @@
                             $insertOtp = "INSERT INTO `otpdb`(`userId`, `code`) VALUES('$newUuidv4','$otp')";
                             $otpResult = $dbConnect->query($insertOtp);
                             if($otpResult){
+                                $insertDiscount = "INSERT INTO `discountdb`(`userId`, `discount`, `date`)VALUES('$newUuidv4','40','$registerDate')";
+                                $dbConnect->query($insertDiscount);
                                 $selectNewUser = "SELECT * FROM `users` WHERE `id`='$newUuidv4'";
                                 $newUserResult = $dbConnect->query($selectNewUser);
                                 $newUserData = $newUserResult->fetch_assoc();

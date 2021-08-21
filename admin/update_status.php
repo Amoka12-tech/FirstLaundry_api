@@ -64,7 +64,7 @@
             //code...
             $updateStatus = $dbConnect->query($qry);
             if($updateStatus === TRUE){
-                $insetHistoryQry = "INSERT INTO `notificationsdb` (`userId`, `orderId`, `type`, `message`, `date`) VALUES ('$userId', '$orderId', 'order', '$message', '$updateDate');";
+                $insetHistoryQry = "INSERT INTO `notificationsdb` (`userId`, `orderId`, `type`, `message`, `date`) VALUES ('$userId', '$orderId', '$value', '$message', '$updateDate');";
 
                 $retriveOrder = "SELECT * FROM `orderdb` WHERE `userId`='$userId' AND `orderId`='$orderId'";
                 $retriveItems = "SELECT * FROM `items` WHERE `orderId`='$orderId'";
