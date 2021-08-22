@@ -34,7 +34,7 @@
     }else{
         $userId = mysqli_real_escape_string($dbConnect, trim($data->userId));
 
-            $getNotificationQry = "SELECT * FROM `notificationsdb` WHERE `userId`='$userId'";
+            $getNotificationQry = "SELECT * FROM `notificationsdb` WHERE `userId`='$userId' ORDER BY `date` DESC";
             $result = $dbConnect->query($getNotificationQry);
             if($result->num_rows > 0){
                 $data = $result->fetch_all(MYSQLI_ASSOC);
