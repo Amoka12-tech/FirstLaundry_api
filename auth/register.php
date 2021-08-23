@@ -73,7 +73,7 @@
                             $insertOtp = "INSERT INTO `otpdb`(`userId`, `code`) VALUES('$newUuidv4','$otp')";
                             $otpResult = $dbConnect->query($insertOtp);
                             if($otpResult){
-                                $insertDiscount = "INSERT INTO `discountdb`(`userId`, `discount`, `date`)VALUES('$newUuidv4','40','$registerDate')";
+                                $insertDiscount = "INSERT INTO `discountdb`(`userId`, `discount`, `date`) VALUES('$newUuidv4','40','$registerDate')";
                                 $dbConnect->query($insertDiscount);
                                 $selectNewUser = "SELECT * FROM `users` WHERE `id`='$newUuidv4'";
                                 $newUserResult = $dbConnect->query($selectNewUser);
